@@ -6,6 +6,9 @@
 2. Menampilkan 2 state yang memiliki keuntungan profit yang paling sedikit berdasarkan hasil nomor 1
 3. Menampilkan 10 produk yang memiliki keuntungan paling sedikit berdasarkan hasil 2 negara nomor 2
 
+
+# Soal 1
+
 Code : 
 
 ```#!/bin/bash
@@ -66,3 +69,32 @@ poinb2=`awk -F "," -v a=$poina 'FNR>1{if(a~$13)seen[$11]+=$NF}END{for(i in seen)
 Kedua code ini sebenarnya sama jadi saya akan jelaskan yang atas saja.
 
 pada variabel poinb kita lakukan input hasil dari variabel sebelumnya dengan cara menulis command ```-v``` dan kita masukkan logic ke awk dimana jika input dari variabel sebelumnya ada di kolom 13 maka lihat kolom 11 dimana terdapat state dan jumlahkan kolom terakhir dan lakukan print dari Sample-Superstore.csv. Setelah itu kita sort datanya secara numerikal dengan patokan dari kolom ke 2 sehingga menggunakan parameter -nk2 dan kita print row dibawah 2 dan kolom pertama lalu kita simpan ke dalam file ```susah.txt``` karena akan digunakan pada soal ke 3 dan awk tidak bisa membaca 2 input secara bersamaan jadi harus di pisah. Yang membedakan baris pertama dan kedua adalah pada saat print nya dimana pada baris kedua kita gunakan logic "==" karena kita hanya butuh print row ke 2 dan kolom ke 1 dan kita simpan dalam variabel ```njir.txt``` dan akan digunakan lagi berikutnya.
+
+```varsusah=$(cat "susah.txt")``` 
+
+Code di atas digunakan untuk mengambil data dari txt yang sudah di export dari awk sebelumnya.
+
+```
+poinc=`awk -F "," -v susah="$varsusah" 'FNR>1{if(susah~$11)seen[$NF]}END{for(i in seen)print i}' Sample-Superstore.csv | sort -n | awk 'NR==1,NR==10{print $1}' > apaini.txt `
+poinc2=`awk -F "," -v njir="$varnjir" 'FNR>1{if(njir~$11)seen[$NF]}END{for(i in seen)print i}' Sample-Superstore.csv | sort -n | awk 'NR==1,NR==10{print $1}' > pusinggua.txt
+```
+Code di atas mengecek apakah pada kolom ke 11 ada tulisan yang sama dengan variabel yang sudah di ambil dari awk sebelumnya dan jika ada maka akan mengecek pada kolom terakhir(profit) dan melakukan print row profit 1-10
+
+```
+echo "10 barang dari negara bagian $varsusah"
+varpusing=$(cat "apaini.txt")
+hasilc=`awk -F "\"*,\"*" -v susah="$varsusah" 'FNR>1{if($11~susah)printf "%f %s\n",$21,$17}' Sample-Superstore.csv | sort -g| awk 'NR<11{print $0}'`
+echo "$hasilc"
+
+echo ""
+
+echo "10 barang dari negara bagian $varnjir"
+hasilc2=`awk -F "\"*,\"*" -v njir="$varnjir" 'FNR>1{if($11~njir)printf "%f %s\n",$21,$17}' Sample-Superstore.csv | sort -g | awk 'NR<11{print $0}'`
+echo "$hasilc2"
+```
+disini hasil dari sorting pada awk sebelumnya akan di cocokan dengan row 11 (texas) maka akan melakukan print float kolom 21 dan juga kolom 17 (product name) dan disini comma nya di masukkan ke dalam command yang tidak akan di baca sehingga hasil profit tidak akan bergeser.
+
+# Soal 2
+
+
+
