@@ -52,4 +52,15 @@ Hon Deluxe Fabric Upholstered Stacking Chairs, Rounded Back
 ```
 Sehingga oleh bash akan di anggap kolom nya bertambah 1 kolom jadi saya menggunakan $NF agar bisa mendapatkan hasil yang di inginkan. Line berikutnya merupakan loop untuk melakukan print dari hasil yang didapat. Setelah itu kita tuliskan nama file yang akan di eksekusi yaitu "Sample-Supersotre.csv". Lalu kita pipe agar bisa menjalankan beberapa perintah sekaligus dan diberikan perintah sort diikuti dengan parameter -n yang berarti Numeric Sort dan akan di urutkan dari yang terkecil menuju ke paling besar. Setelah perintah sort maka tinggal melakukan print. Disini, command yang digunakan adalah 
 ``` awk 'FNR<2{print $1}'```
-dimana data yang akan di print adalah row yang kurang dari 2 dan print kolom pertama saja sehingga hasil yang di dapat adalah "Central"
+dimana data yang akan di print adalah row yang kurang dari 2 dan print kolom pertama saja sehingga hasil yang di dapat adalah ```Central```
+
+Lanjut pada baris berikutnya kita hanya melakukan echo variabel di atasnya yaitu ```poina``` sehingga akan menampilkan tulisan ```Central``` ke layar. Setelah itu kita print break agar ada jarak antara soal pertama dan kedua.
+
+Berikutnya kita print tulisan ```"2 negara bagian yang memiliki profit paling sedikit dari poin A"``` lalu kita letakkan code berikutnya yaitu 
+
+```poinb=`awk -F "," -v a=$poina 'FNR>1{if(a~$13)seen[$11]+=$NF}END{for(i in seen)print i, seen[i]}' Sample-Superstore.csv | sort -nk2 | awk 'FNR<2{print $1}' > susah.txt`
+poinb2=`awk -F "," -v a=$poina 'FNR>1{if(a~$13)seen[$11]+=$NF}END{for(i in seen)print i, seen[i]}' Sample-Superstore.csv | sort -nk2 | awk 'NR==2{print $1}' > njir.txt```
+
+Kedua code ini sebenarnya sama jadi saya akan jelaskan yang atas saja.
+
+pada variabel poinb kita lakukan input hasil dari variabel sebelumnya dengan cara menulis command ```-v``` dan kita masukkan logic ke awk dimana jika input dari variabel sebelumnya ada di kolom 13 maka lihat kolom 11 dimana terdapat state dan jumlahkan kolom terakhir dan lakukan print dari Sample-Superstore.csv. Setelah itu kita sort datanya secara numerikal dengan patokan dari kolom ke 2 sehingga menggunakan parameter -nk2 dan kita print row dibawah 2 dan kolom pertama lalu kita simpan ke dalam file ```susah.txt``` karena akan digunakan pada soal ke 3 dan awk tidak bisa membaca 2 input secara bersamaan jadi harus di pisah. Yang membedakan baris pertama dan kedua adalah pada saat print nya dimana pada baris kedua kita gunakan logic "==" karena kita hanya butuh print row ke 2 dan kolom ke 1 dan kita simpan dalam variabel ```njir.txt``` dan akan digunakan lagi berikutnya.
