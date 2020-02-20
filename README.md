@@ -1,2 +1,5 @@
-# modul1
-Tugas Sistem Operasi Modul 1
+# Sistem Operasi
+## Modul 1
+## Tugas Sistem Operasi Modul 1
+
+
