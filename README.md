@@ -58,8 +58,10 @@ Lanjut pada baris berikutnya kita hanya melakukan echo variabel di atasnya yaitu
 
 Berikutnya kita print tulisan ```"2 negara bagian yang memiliki profit paling sedikit dari poin A"``` lalu kita letakkan code berikutnya yaitu 
 
-```poinb=`awk -F "," -v a=$poina 'FNR>1{if(a~$13)seen[$11]+=$NF}END{for(i in seen)print i, seen[i]}' Sample-Superstore.csv | sort -nk2 | awk 'FNR<2{print $1}' > susah.txt`
-poinb2=`awk -F "," -v a=$poina 'FNR>1{if(a~$13)seen[$11]+=$NF}END{for(i in seen)print i, seen[i]}' Sample-Superstore.csv | sort -nk2 | awk 'NR==2{print $1}' > njir.txt```
+```
+poinb=`awk -F "," -v a=$poina 'FNR>1{if(a~$13)seen[$11]+=$NF}END{for(i in seen)print i, seen[i]}' Sample-Superstore.csv | sort -nk2 | awk 'FNR<2{print $1}' > susah.txt`
+poinb2=`awk -F "," -v a=$poina 'FNR>1{if(a~$13)seen[$11]+=$NF}END{for(i in seen)print i, seen[i]}' Sample-Superstore.csv | sort -nk2 | awk 'NR==2{print $1}' > njir.txt
+```
 
 Kedua code ini sebenarnya sama jadi saya akan jelaskan yang atas saja.
 
