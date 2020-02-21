@@ -96,5 +96,52 @@ disini hasil dari sorting pada awk sebelumnya akan di cocokan dengan row 11 (tex
 
 # Soal 2
 
+1.Generate password 28 digit dan jadikan nama file
+2.Enkripsi file dengan melihat jam pada saat pembuatan file poin1
+3.Dekripsi hasil dari file 2
 
+## Poin 1
 
+```
+#!/bin/bash
+name=$*
+pertama=`cat /dev/urandom | tr -dc 'A-Za-z0-9' | fold -w 28 | head -n 1` 
+hapusangka=`printf '%s\n' "${name//[[:digit:]]/}"`
+echo -e $pertama >> $hapusangka.txt
+```
+Pada poin pertama ini line pertama kita declare variabel nama yang akan menyimpan argumen yang di inputkan oleh user.
+Lalu kita menggunakan fungsi dari linux dimana akan melakukan generate random password dengan parameter yang sudah kita set yaitu A-Z lalu a-z dan juga 0-9. Kita gunakan fungsi fold 28 dimana fungsi ini sendiri akan membuat kata yang digenerate sepanjang 28 kata lalu fungsi head 1 berfungsi untuk mengambil baris pertama dari fold.
+
+Pada baris berikutnya adalah program untuk menghapus angka yang dimasukkan oleh user dan hanya menyisakan alphabet saja. Lalu berikutnya variabel pada line kedua akan disimpan ke dalam sebuah file txt dimana nama file tersebut diambil dari variabel pada baris ketiga yaitu hapus angka.
+
+## Poin 2
+
+```
+#!/bin/bash
+
+for nama in $*
+do
+namaawal=`basename $nama .txt`
+encrypt=`date +%H -r $nama`
+namabaru=`echo $namaawal | caesar $encrypt`
+mv $nama $namabaru.txt
+done
+```
+
+Pada poin kedua ini line pertama kita buat sebuah looping dimana akan menempatkan argumen yang ada pada variabel nama dan setelah itu akan melakukan pengambilan nama file dan menyimpan ke dalam variabel nama. Setelah itu pada variabel encrypt kita ambil jam menggunakan command date dari file nama tersebut. Setelah itu, kita buat variabel baru yang akan menampung nama baru yang telah di ecnrypt menggunakan caesar. Disini, menggunakan library karena lebih menghemat waktu. Lalu, merename file lama dengan file baru.
+
+## Poin 3
+
+```
+#!/bin/bash
+
+for nama in $*
+do
+namaawal=`basename $nama .txt`
+decrypt=`date +%H -r $nama`
+hasildecrypt=`expr 26 - $decrypt`
+namabaru=`echo $namaawal | caesar $hasildecrypt`
+mv $nama $namabaru.txt
+done
+```
+Pada poin ketiga ini sama saja dengan poin kedua dan hanya di balik fungsi nya. Namun, yang membedakan adalah pada variabel decrypt dimana 26 (jumlah alphabet) di kurangi jumlah jam yang didapat dari jam pembuatan file enkripsi. Setelah itu kita simpan dengan nama baru dimana nama awal akan di decrypt lalu kita rename nama yang ada pada file dengan nama baru yang di dapat setelah hasil decrypt.
