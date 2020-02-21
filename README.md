@@ -148,7 +148,68 @@ Pada poin ketiga ini sama saja dengan poin kedua dan hanya di balik fungsi nya. 
 
 # Soal 3
 
+## Poin 1
+
+```
+#!/bin/bash
+totalfile=`ls | grep "pdkt_kusuma" | cut -d "_" -f 3 | sort -n | tail -1`
+
+if [[ $totalfile =~ [:digit:] ]]
+then
+	$totalfile = 0
+fi
+
+b=`expr $totalfile + 1`
+c=`expr $totalfile + 28`
+
+for((a=b;a<=c;a++))
+do
+wget "https://loremflickr.com/320/240/cat" -a wget.log -O pdkt_kusuma_$a
+done
+
+grep "Location" wget.log >> location.log
+
+```
+
+Pada baris pertama merupakan code untuk melihat file total dengan cara list lalu mengambil tulisan ```pdkt_kusuma``` lalu potong bagian belakang nya dengan pemisah _ dan field ke 3 lalu sort secara numerikal lalu akan di cek apakah total file nya adalah angka. Jika bukan angka maka total file akan otomatis jadi 0. Setelah itu, kita buat b adalah total file di tambah satu dan c adalah total file di tambah dengan 28 karena file yang di download adalah 28 buah file. Setelah itu kita masukkan ke dalam program looping dimana jika memenuhi syarat maka akan melakukan wget dengan website yang sudah tertera menyimpan logfile dalam file bernama ```wget.log``` dan merename file outputnya menjadi ```pdkt_kusuma``` di ikuti dengan file ke berapa kali dia di download. Setelah selesai maka kita ambil lokasi dari ```wget.log``` dan menyimpan lokasi di dalam file ```location.log```
+
+## Poin 2
+
 Crontab : 
 ```
 5 6-23/8 * * 0-5 /home/andrew/Desktop/sisop/soal3.sh
 ```
+Code crontab diatas berarti bahwa crontab akan dijalankan pada menit ke 05 setiap 8 jam mulai dari jam 6 - 23 dan berjalan dari hari minggu hingga hari jumat
+
+## Poin 3
+
+```
+#!/bin/bash
+totalfile=`ls | grep "pdkt_kusuma" | cut -d "_" -f 3 | sort -n | tail -1`
+if [[ `ls | grep "kenangan"` != "kenangan" ]]
+then 
+	mkdir ./kenangan
+fi
+if [[ `ls | grep "duplicate"` != "duplicate" ]]
+then
+	mkdir ./duplicate
+fi
+for((satu=1;satu<=totalfile;satu++)) 
+do
+	for((dua=1;dua<=totalfile;dua++))
+	do 
+	pertama=`md5sum pdkt_kusuma_$satu pdkt_kusuma_$dua | awk '{if(NR==1)print $1}'`
+	kedua=`md5sum pdkt_kusuma_$satu pdkt_kusuma_$dua | awk '{if(NR==2)print $1}'`
+	if [[ $satu -ne $dua && $pertama == $kedua ]]
+	then
+		mv pdkt_kusuma_$dua ./duplicate/duplicate_$dua
+	fi
+	done 
+done
+for((terakhir=1;terakhir<=totalfile;terakhir++))
+do
+mv pdkt_kusuma_$terakhir ./kenangan/kenangan_$terakhir
+done
+cat wget.log >> wget.log.bak
+```
+Pada poin yang ke 3 ini line kedua sama dengan yang ada pada poin ke 2 dimana hanya listing file. Berikutnya, kita lakukan pengecekan apakah kenangan belum ada dan jika belum ada maka kita buat folder baru dengan nama kenangan begitu juga dengan duplicate. Lalu kita lakukan pengecekan hashing dari file satu dan dua dan jika sama maka akan di pindah file yang kedua kedalam folder duplicate di ikuti dengan angka yang akan terus bertambah jika ditemukan duplicate yang terbaru. Jika semua duplicate sudah di pindah ke dalam folder duplicate maka file yang tersisa akan dimasukkan kedalam folder kenangan. Setelah itu, file ```wget.log``` akan di buat backupnya menjadi file ```wget.log.bak```
