@@ -145,3 +145,10 @@ mv $nama $namabaru.txt
 done
 ```
 Pada poin ketiga ini sama saja dengan poin kedua dan hanya di balik fungsi nya. Namun, yang membedakan adalah pada variabel decrypt dimana 26 (jumlah alphabet) di kurangi jumlah jam yang didapat dari jam pembuatan file enkripsi. Setelah itu kita simpan dengan nama baru dimana nama awal akan di decrypt lalu kita rename nama yang ada pada file dengan nama baru yang di dapat setelah hasil decrypt.
+
+# Soal 3
+
+Crontab : 
+```
+5 6-23/8 * * 0-5 /home/andrew/Desktop/sisop/soal3.sh
+```
