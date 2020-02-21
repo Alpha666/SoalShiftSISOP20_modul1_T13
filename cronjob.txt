@@ -1,0 +1,1 @@
+5 6-23/8 * * 0-5 /home/Andrew/Dekstop/sisop/soal3.sh
